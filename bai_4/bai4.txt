@@ -1,0 +1,58 @@
+PHẦN 1: PHÂN TÍCH THIẾT KẾ MODULE VÀ HÀM
+1. Thiết kế Module
+Tên module: data.students
+Vai trò: Lưu trữ cơ sở dữ liệu giả lập của sinh viên.
+Các hàm chính: Không có (chỉ chứa biến student_records).
+Kiểu import sử dụng: from data.students import student_records
+Tên module: utils.score_utils
+Vai trò: Cung cấp các công cụ tính toán và phân loại điểm số.
+Các hàm chính: calculate_average(scores), classify_student(average)
+Kiểu import sử dụng: from utils.score_utils import calculate_average, classify_student
+Tên module: utils.string_utils
+Vai trò: Xử lý và chuẩn hóa chuỗi văn bản liên quan đến thông tin sinh viên.
+Các hàm chính: normalize_student_names(records)
+Kiểu import sử dụng: import utils.string_utils as str_ext
+Tên module: utils.random_utils
+Vai trò: Sinh các chuỗi dữ liệu ngẫu nhiên cho hệ thống.
+Các hàm chính: generate_assignment_code()
+Kiểu import sử dụng: from utils.random_utils import generate_assignment_code
+Tên module: reports.report_generator
+Vai trò: Tổng hợp dữ liệu để hiển thị hoặc xuất báo cáo định dạng văn bản.
+Các hàm chính: display_student_scores(records), export_learning_report(records)
+Kiểu import sử dụng: from reports.report_generator import display_student_scores, export_learning_report
+2. Thiết kế Hàm Nghiệp Vụ
+Tên hàm: calculate_average
+Input: scores (list)
+Output: float (Điểm trung bình)
+Module chứa hàm: utils.score_utils
+Mô tả luồng xử lý: Lọc danh sách đầu vào, chỉ giữ lại các phần tử thuộc kiểu số (int, float). Nếu danh sách sau lọc rỗng, trả về 0.0. Ngược lại, tính tổng giá trị các số hợp lệ rồi chia cho số lượng của chúng.
+Tên hàm: classify_student
+Input: average (float)
+Output: str (Xếp loại)
+Module chứa hàm: utils.score_utils
+Mô tả luồng xử lý: Kiểm tra giá trị average qua các nhánh điều kiện: nếu >= 8.0 trả về "Giỏi"; nếu >= 6.5 trả về "Khá"; nếu >= 5.0 trả về "Trung bình"; các trường hợp còn lại trả về "Yếu".
+Tên hàm: display_student_scores
+Input: records (list)
+Output: None (In màn hình console)
+Module chứa hàm: reports.report_generator
+Mô tả luồng xử lý: Kiểm tra danh sách records. Nếu rỗng, hiển thị thông báo hệ thống chưa có dữ liệu rồi thoát hàm. Nếu có dữ liệu, duyệt qua từng bản ghi, gọi hàm calculate_average để lấy điểm trung bình, tiếp tục truyền kết quả vào classify_student để lấy xếp loại, sau đó in ra thông tin định dạng theo mẫu.
+Tên hàm: normalize_student_names
+Input: records (list)
+Output: None (Cập nhật trực tiếp dữ liệu)
+Module chứa hàm: utils.string_utils
+Mô tả luồng xử lý: Kiểm tra danh sách records. Nếu rỗng, thông báo thiếu dữ liệu. Nếu hợp lệ, duyệt qua từng sinh viên, lấy chuỗi tên ra xử lý: cắt khoảng trắng hai đầu, tách chuỗi bằng phương thức .split() để loại bỏ toàn bộ khoảng trắng thừa ở giữa, gộp lại bằng phương thức .title() để viết hoa chữ cái đầu của từ, cập nhật lại vào bản ghi và in ra kết quả.
+Tên hàm: generate_assignment_code
+Input: None
+Output: str (Mã bài tập)
+Module chứa hàm: utils.random_utils
+Mô tả luồng xử lý: Kết hợp tập hợp ký tự chữ hoa từ string.ascii_uppercase và chữ số từ string.digits. Sử dụng vòng lặp hoặc hàm random.choices để lấy ra ngẫu nhiên 4 ký tự từ tập hợp trên, sau đó nối với tiền tố "PY-" tạo thành mã hoàn chỉnh.
+Tên hàm: export_learning_report
+Input: records (list)
+Output: None (Ghi file hệ thống)
+Module chứa hàm: reports.report_generator
+Mô tả luồng xử lý: Nếu records rỗng, hiển thị thông báo lỗi. Nếu hợp lệ, duyệt qua danh sách để đếm tổng số lượng sinh viên, tính điểm trung bình từng người để phân nhóm: tích lũy vào biến Đạt nếu điểm >= 5.0 hoặc biến Cải thiện nếu điểm < 5.0. Lấy thời gian hiện tại từ datetime.now(), mở file learning_report.txt để ghi toàn bộ nội dung dữ liệu, sau đó sử dụng thư viện colorama để in thông báo hoàn tất có màu lên terminal.
+Tên hàm: main
+Input: None
+Output: None
+Module chứa hàm: main.py
+Mô tả luồng xử lý: Chạy một vòng lặp vô hạn while True hiển thị menu chức năng của hệ thống. Đọc lựa chọn của người dùng trong khối try-except. Nếu người dùng nhập sai định dạng hoặc nhập số ngoài phạm vi từ 1 đến 5, hệ thống thông báo yêu cầu nhập lại mà không làm sập chương trình. Khi chọn 5, in lời chào và thoát vòng lặp.
